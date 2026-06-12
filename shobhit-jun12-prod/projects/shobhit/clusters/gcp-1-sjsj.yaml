@@ -5,7 +5,7 @@ metadata:
   project: shobhit
 spec:
   blueprint:
-    name: minimal
+    name: default-gke
     version: latest
   cloudCredentials: gke
   config:
@@ -47,5 +47,5 @@ spec:
     enabled: true
     projects:
     - name: shobhittest1
-      id: mplgpz2
+      id: mplgpz2 
   type: gke
