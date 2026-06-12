@@ -43,9 +43,4 @@ spec:
         strategy: SURGE
     releaseChannel:
       channel: EXTENDED
-  sharing:
-    enabled: true
-    projects:
-    - name: shobhittest1
-      id: mplgpz2 
   type: gke
