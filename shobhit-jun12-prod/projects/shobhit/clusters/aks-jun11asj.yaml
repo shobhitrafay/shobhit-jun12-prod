@@ -53,4 +53,9 @@ spec:
           vmSize: Standard_DS2_v2
         type: Microsoft.ContainerService/managedClusters/agentPools
       resourceGroupName: shobhit-rg
+  sharing:
+    enabled: true
+    projects:
+    - name: zahoor-prod
+    - name: wavelength
   type: aks
