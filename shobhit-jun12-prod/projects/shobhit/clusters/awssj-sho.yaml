@@ -64,5 +64,4 @@ spec:
           subnet-0fdd410bfb1c0cba8:
             id: subnet-0fdd410bfb1c0cba8
     zonalShiftConfig: {}
-  proxyConfig: {}
   type: aws-eks
