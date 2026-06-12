@@ -5,7 +5,7 @@ metadata:
   project: shobhit
 spec:
   blueprint:
-    name: minimal
+    name: default-gke
     version: latest
   cloudCredentials: gke
   config:
