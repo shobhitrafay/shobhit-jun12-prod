@@ -1,0 +1,163 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  labels:
+    hello: world
+    super: awesome
+  name: demo-shobhit888
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: custombp
+    version: v1
+  cloudCredentials: shobhit_azure
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: demo-shobhit888
+    spec:
+      managedCluster:
+        additionalMetadata:
+          oms_workspace_location: centralindia
+        apiVersion: "2021-05-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            adminGroupObjectIds:
+            - 9063e71a-fc36-4281-ac4b-be26189fa004
+            managed: true
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "true"
+                rotationPollInterval: 2m
+              enabled: true
+            azurePolicy:
+              enabled: false
+            httpApplicationRouting:
+              enabled: false
+            omsAgent:
+              config:
+                logAnalyticsWorkspaceResourceID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/defaultresourcegroup-cin/providers/microsoft.operationalinsights/workspaces/DefaultWorkspace-a2252eb2-7a25-432b-a5ec-e18eba6f26b1-CIN
+              enabled: true
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+            privateDNSZone: System
+          autoScalerProfile:
+            balance-similar-node-groups: "false"
+            expander: random
+            max-empty-bulk-delete: "10"
+            max-graceful-termination-sec: "600"
+            max-node-provision-time: 15m
+            max-total-unready-percentage: "45"
+            new-pod-scale-up-delay: 10s
+            ok-total-unready-count: "3"
+            scale-down-delay-after-add: 10m
+            scale-down-delay-after-delete: 10s
+            scale-down-delay-after-failure: 3m
+            scale-down-unneeded-time: 10m
+            scale-down-unready-time: 20m
+            scale-down-utilization-threshold: "0.5"
+            scan-interval: 10s
+            skip-nodes-with-local-storage: "true"
+            skip-nodes-with-system-pods: "true"
+          disableLocalAccounts: false
+          dnsPrefix: testuser-test-999dns
+          enableRBAC: true
+          kubernetesVersion: 1.24.10
+          linuxProfile:
+            adminUsername: rafayuser
+            ssh:
+              publicKeys:
+              - keyData: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsNWPqLqjrIPLjO9CK4xhcrIPyk82wjB+BSWWUwVniSKHJjq3TmZnA1YKSaraGfJZfyQppK6AyqhxYw5l2SLHD896VyZw88p11qC2VBCKoQxn2fLOLJkRumCAclhC9mfMITyF/O5eLXzZEymts3SV160UAKvzPlqigzwdfxwPRDjawCRdKkoB/d1gbPu4qCaNm7B6pf6iG0TLIZXVWkX/GkPXZh40aBq/fU8ou2W87Ew3bK3AznXnN+t2k7t25sriz3sQUzpe7yaWUjnh5KUZ+fmuDsWpXj0cugorltYLFDKpoACKR99cQDoGcVS3RzYIFWLKto/0Ok4TVbL/5a2wrqfaxdJiLyTkzNeKDdd5/iQpSK+DN82iiONET4pHKI6zQ7/LcNzsAC7QrL7w+7F4VYqIqzKOfLpFNA4RjcUMCu/N6JK/kIHjW3cM2PTfZOBleZ7zfOfigTx2E7d+dTbC+ARjSbamJRwrnPFtumr4qVSsAm+H6Xn3YaqN4Tz05h/E=
+                  generated-by-azure
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            dockerBridgeCidr: 172.17.0.1/16
+            loadBalancerSku: Standard
+            networkPlugin: azure
+            networkPolicy: calico
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: shobhit-rgsas99
+        sku:
+          name: Basic
+          tier: Free
+        tags:
+          env: qc
+          user: shob
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2021-05-01"
+        location: centralindia
+        name: asdasd
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 2
+          enableAutoScaling: true
+          maxCount: 10
+          maxPods: 40
+          minCount: 1
+          mode: User
+          nodeLabels:
+            nodepool-os: linux
+            nodepool-type: user
+          orchestratorVersion: 1.24.10
+          osType: Windows
+          scaleSetEvictionPolicy: Delete
+          scaleSetPriority: Regular
+          tags:
+            env: qa
+            user: shobhit@rafay.co
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 40%
+          vmSize: Standard_B2s
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Network/virtualNetworks/sjnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2021-05-01"
+        location: centralindia
+        name: system
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 2
+          enableAutoScaling: true
+          maxCount: 10
+          maxPods: 40
+          minCount: 1
+          mode: System
+          nodeLabels:
+            nodepool-os: linux
+            nodepool-type: system
+          nodeTaints:
+          - CriticalAddonsOnly=true:NoSchedule
+          orchestratorVersion: 1.24.10
+          osType: Linux
+          scaleSetEvictionPolicy: Delete
+          scaleSetPriority: Regular
+          tags:
+            env: dev
+            user: shobhit@rafay.co
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 40%
+          vmSize: Standard_B2s
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Network/virtualNetworks/sjnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  sharing:
+    enabled: true
+    projects:
+    - name: defaultproject
+  type: aks

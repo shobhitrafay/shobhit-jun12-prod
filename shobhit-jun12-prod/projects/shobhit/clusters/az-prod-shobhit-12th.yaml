@@ -1,0 +1,170 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: az-prod-shobhit-12th
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: az-prod-shobhit-12th
+    spec:
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            adminGroupObjectIds:
+            - e77135db-9039-42a5-a9db-c6afa3b84a9b
+            managed: true
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: true
+          dnsPrefix: az-prod-shobhit-12th-dns
+          enableRBAC: true
+          httpProxyConfig:
+            httpProxy: http://10.225.0.10:443/
+            httpsProxy: http://10.225.0.10:443/
+            noProxy:
+            - .hcp.centralindia.azmk8s.io
+            - 10.224.0.0/12
+            - 10.0.0.0/16
+            - 169.254.169.254
+            - 168.63.129.16
+            - localhost
+            - konnectivity
+            - 10.244.0.0/16
+            - 127.0.0.1
+            - k8master.service.consul
+            - ingress-controller-v1-controller-admission.rafay-system.svc
+            - rafay-drift-v3.rafay-system.svc
+            - secretstore-webhook.rafay-system.svc
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.30.6
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: calico
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          email: shobhit@rafay.co
+          env: qa
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.30.6
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: sec
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.30.6
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: np2
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.30.6
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: np3
+        properties:
+          count: 1
+          enableAutoScaling: true
+          kubeletConfig:
+            containerLogMaxFiles: 2
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.30.6
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+      workloadIdentities:
+      - createIdentity: true
+        metadata:
+          location: centralindia
+          name: new-wi
+          resourceGroup: shobhit-rg
+          tags:
+            env: qa
+        roleAssignments:
+        - name: Key Vault Secrets User
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhitkeyvault2
+        serviceAccounts:
+        - createAccount: true
+          metadata:
+            name: new-ns-may12
+            namespace: default
+  proxyConfig:
+    enabled: true
+    httpProxy: http://10.225.0.10:443/
+    httpsProxy: http://10.225.0.10:443/
+    noProxy: .hcp.centralindia.azmk8s.io,10.224.0.0/12,10.0.0.0/16,169.254.169.254,168.63.129.16,localhost,konnectivity,10.244.0.0/16,127.0.0.1,k8master.service.consul,ingress-controller-v1-controller-admission.rafay-system.svc,rafay-drift-v3.rafay-system.svc,secretstore-webhook.rafay-system.svc
+  type: aks

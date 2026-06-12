@@ -1,0 +1,68 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  annotations:
+    sss: sa
+  labels:
+    key1: value1
+    key2: value2
+  name: sj2rauto-gke-22412-9febr
+  project: shobhit
+spec:
+  blueprint:
+    name: default-gke
+    version: latest
+  cloudCredentials: gke
+  config:
+    controlPlaneVersion: "1.32"
+    features:
+      enableComputeEnginePersistentDiskCSIDriver: true
+    gcpProject: qa-automation-371111
+    location:
+      config:
+        zone: us-central1-c
+      defaultNodeLocations:
+        enabled: true
+        zones:
+        - us-central1-c
+      type: zonal
+    network:
+      access:
+        config: null
+        type: public
+      enableVPCNativetraffic: true
+      maxPodsPerNode: 110
+      name: phani-vpc1
+      subnetName: sub1-phani-vpc1
+    nodePools:
+    - machineConfig:
+        bootDiskSize: 100
+        bootDiskType: pd-standard
+        imageType: COS_CONTAINERD
+        machineType: e2-standard-4
+      name: default-nodepool
+      nodeVersion: "1.32"
+      resourceLabels:
+        label: reslabel-nodepool
+        label-nodepool: res-val
+      size: 2
+    - autoScaling:
+        maxNodes: 1
+        minNodes: 1
+      machineConfig:
+        bootDiskSize: 100
+        bootDiskType: pd-standard
+        imageType: COS_CONTAINERD
+        machineType: e2-standard-4
+      name: second-nodepool
+      nodeVersion: "1.32"
+      size: 2
+    preBootstrapCommands:
+    - ""
+    - ""
+    resourceLabels:
+      adsasd: asdasdasda
+      label: reslabel-cluster
+      label-cluster: reslabel
+      nbj: hbn
+  type: gke

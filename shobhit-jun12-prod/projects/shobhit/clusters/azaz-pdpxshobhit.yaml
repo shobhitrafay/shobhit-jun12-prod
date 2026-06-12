@@ -1,0 +1,80 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: azaz-pdpxshobhit
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: azaz-pdpxshobhit
+    spec:
+      managedCluster:
+        apiVersion: "2024-01-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: azaz-pdpxshobhit-dns
+          enableRBAC: true
+          httpProxyConfig:
+            httpProxy: http://10.225.0.10:443/
+            httpsProxy: http://10.225.0.10:443/
+            noProxy:
+            - 10.0.0.0/16
+            - localhost
+            - 127.0.0.1
+            - ingress-controller-v1-controller-admission.rafay-system.svc
+            - secretstore-webhook.rafay-system.svc
+            - 10.225.0.0/24
+            - az-prox-26feb-dns-z9v3wwih.hcp.centralindia.azmk8s.io
+            - 10.244.0.0/16
+            - 10.224.0.0/12
+            - 169.254.169.254
+            - .hcp.centralindia.azmk8s.io
+            - 168.63.129.16
+            - konnectivity
+            - k8master.service.consul
+            - rafay-drift-v3.rafay-system.svc
+          kubernetesVersion: 1.32.6
+          networkProfile:
+            loadBalancerSku: standard
+            networkPlugin: kubenet
+          powerState:
+            code: Running
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.32.6
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig:
+    enabled: true
+    httpProxy: http://10.225.0.10:443/
+    httpsProxy: http://10.225.0.10:443/
+    noProxy: 10.0.0.0/16,localhost,127.0.0.1,ingress-controller-v1-controller-admission.rafay-system.svc,secretstore-webhook.rafay-system.svc,10.225.0.0/24,az-prox-26feb-dns-z9v3wwih.hcp.centralindia.azmk8s.io,10.244.0.0/16,10.224.0.0/12,169.254.169.254,.hcp.centralindia.azmk8s.io,168.63.129.16,konnectivity,k8master.service.consul,rafay-drift-v3.rafay-system.svc
+  type: aks

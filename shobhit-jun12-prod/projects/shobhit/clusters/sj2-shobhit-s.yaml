@@ -1,0 +1,62 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: sj2-shobhit-s
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: default-aks
+    version: latest
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: sj2-shobhit-s
+    spec:
+      managedCluster:
+        apiVersion: "2024-01-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: sj2-shobhit-s-dns
+          enableRBAC: true
+          kubernetesVersion: 1.30.10
+          networkProfile:
+            loadBalancerSku: standard
+            networkPlugin: kubenet
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Stopped
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 2
+          enableAutoScaling: true
+          maxCount: 2
+          maxPods: 110
+          minCount: 2
+          mode: System
+          orchestratorVersion: 1.30.10
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks

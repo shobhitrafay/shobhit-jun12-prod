@@ -1,0 +1,62 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: rauto-wedapr1
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: rauto-wedapr1
+    spec:
+      managedCluster:
+        apiVersion: "2025-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: rauto-wedapr1-dns
+          enableRBAC: true
+          kubernetesVersion: 1.32.7
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPluginMode: overlay
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeProvisioningProfile:
+            defaultNodePools: Auto
+            mode: Auto
+          powerState:
+            code: Running
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2025-01-01"
+        name: primary
+        properties:
+          count: 1
+          mode: System
+          orchestratorVersion: 1.32.7
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks

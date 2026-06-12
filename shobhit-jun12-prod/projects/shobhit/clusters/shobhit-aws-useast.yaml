@@ -1,0 +1,133 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: shobhit-aws-useast
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: aws
+  config:
+    accessConfig:
+      authenticationMode: CONFIG_MAP
+    addons:
+    - name: aws-ebs-csi-driver
+      serviceAccountRoleARN: arn:aws:iam::679196758854:role/rafay-shobhit-aws-useast-addon-aws-ebs-csi-dr-Role1-RVYPqPFtTfjR
+      version: v1.38.1-eksbuild.1
+    - name: coredns
+      version: v1.11.1-eksbuild.8
+    - name: kube-proxy
+      version: v1.30.6-eksbuild.3
+    - name: vpc-cni
+      serviceAccountRoleARN: arn:aws:iam::679196758854:role/rafay-shobhit-aws-useast-addon-vpc-cni-Role1-DeunS3Bc1kEJ
+      version: v1.19.0-eksbuild.1
+    availabilityZones:
+    - us-east-1a
+    - us-east-1b
+    iam:
+      serviceAccounts:
+      - attachRoleARN: arn:aws:iam::679196758854:role/rafay-shobhit-aws-useast-addon-vpc-cni-Role1-DeunS3Bc1kEJ
+        metadata:
+          labels:
+            app.kubernetes.io/instance: aws-vpc-cni
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: aws-node
+            app.kubernetes.io/version: v1.19.0
+            helm.sh/chart: aws-vpc-cni-1.19.0
+            k8s-app: aws-node
+          name: aws-node
+          namespace: kube-system
+        tags:
+          alpha.rafay.io/addon-name: vpc-cni
+          alpha.rafay.io/cluster-name: shobhit-aws-useast
+          alpha.rafay.io/rafay-version: v2.12.0-1
+          alpha.rafay.io/stack-uuid: x1kygkz-cluster-329cf5b9-a84c-46f4-8f2c-87b62aed7f03
+          email: shobhit@rafay.co
+          env: qa
+          rafay.cluster.k8s.io/v1alpha1/cluster-name: shobhit-aws-useast
+      - attachRoleARN: arn:aws:iam::679196758854:role/rafay-shobhit-aws-useast-addon-aws-ebs-csi-dr-Role1-RVYPqPFtTfjR
+        metadata:
+          labels:
+            app.kubernetes.io/component: csi-driver
+            app.kubernetes.io/managed-by: EKS
+            app.kubernetes.io/name: aws-ebs-csi-driver
+            app.kubernetes.io/version: 1.38.1
+          name: ebs-csi-controller-sa
+          namespace: kube-system
+        tags:
+          alpha.rafay.io/addon-name: aws-ebs-csi-driver
+          alpha.rafay.io/cluster-name: shobhit-aws-useast
+          alpha.rafay.io/rafay-version: v2.12.0-1
+          email: shobhit@rafay.co
+          env: qa
+          rafay.cluster.k8s.io/v1alpha1/cluster-name: shobhit-aws-useast
+      serviceRoleARN: arn:aws:iam::679196758854:role/rafay-shobhit-aws-useast-cluster-ServiceRole-dr4EamiL0U4Y
+      withOIDC: true
+    managedNodeGroups:
+    - amiFamily: AmazonLinux2
+      availabilityZones:
+      - us-east-1a
+      - us-east-1b
+      desiredCapacity: 3
+      iam:
+        instanceRoleARN: arn:aws:iam::679196758854:role/rafay-shobhit-aws-useast-nodegroup-NodeInstanceRole-bJ6zGr6oqRp2
+      instanceType: t3.xlarge
+      labels:
+        alpha.rafay.io/cluster-name: shobhit-aws-useast
+        alpha.rafay.io/nodegroup-name: managed-ng-1
+      maxSize: 3
+      minSize: 2
+      name: managed-ng-1
+      securityGroups:
+        attachIDs:
+        - sg-0e0920cec473047f0
+      subnets:
+      - subnet-05eab499e5ae6e60b
+      - subnet-0ebdda8125d877288
+      tags:
+        alpha.eksctl.io/cluster-oidc-enabled: "true"
+        alpha.rafay.io/cluster-name: shobhit-aws-useast
+        alpha.rafay.io/nodegroup-name: managed-ng-1
+        alpha.rafay.io/nodegroup-type: managed
+        alpha.rafay.io/rafay-version: v2.12.0-1
+        email: shobhit@rafay.co
+        env: qa
+        rafay.cluster.k8s.io/v1alpha1/cluster-name: shobhit-aws-useast
+      volumeEncrypted: true
+      volumeKmsKeyID: c023791e-ba8b-426a-9119-9b04972e7977
+      volumeSize: 80
+      volumeType: gp3
+    metadata:
+      name: shobhit-aws-useast
+      region: us-east-1
+      tags:
+        alpha.eksctl.io/cluster-oidc-enabled: "true"
+        alpha.rafay.io/cluster-name: shobhit-aws-useast
+        alpha.rafay.io/rafay-version: v2.12.0-1
+        alpha.rafay.io/stack-uuid: x1kygkz-cluster-329cf5b9-a84c-46f4-8f2c-87b62aed7f03
+        email: shobhit@rafay.co
+        env: qa
+      version: "1.30"
+    network:
+      cni:
+        name: aws-cni
+    vpc:
+      cidr: 192.168.0.0/16
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: true
+      id: vpc-030023f0472e0b8f6
+      securityGroup: sg-0598689f9079a3653
+      subnets:
+        private:
+          subnet-06c488b1082440a1c:
+            id: subnet-06c488b1082440a1c
+          subnet-0472300a02f3a846d:
+            id: subnet-0472300a02f3a846d
+        public:
+          subnet-05eab499e5ae6e60b:
+            id: subnet-05eab499e5ae6e60b
+          subnet-0ebdda8125d877288:
+            id: subnet-0ebdda8125d877288
+  proxyConfig: {}
+  type: aws-eks

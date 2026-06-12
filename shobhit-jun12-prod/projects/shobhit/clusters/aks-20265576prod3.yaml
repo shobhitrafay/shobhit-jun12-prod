@@ -1,0 +1,145 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: aks-20265576prod3
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: aks-20265576prod3
+    spec:
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2023-07-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            enableAzureRBAC: true
+            managed: true
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "true"
+                rotationPollInterval: 2m
+              enabled: true
+            azurePolicy:
+              enabled: true
+            omsAgent:
+              config:
+                logAnalyticsWorkspaceResourceID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/defaultresourcegroup-cin/providers/microsoft.operationalinsights/workspaces/DefaultWorkspace-a2252eb2-7a25-432b-a5ec-e18eba6f26b1-CIN
+              enabled: false
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          disableLocalAccounts: true
+          dnsPrefix: aks-333-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.32.3
+          linuxProfile:
+            adminUsername: adminuser
+            ssh:
+              publicKeys:
+              - keyData: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsNWPqLqjrIPLjO9CK4xhcrIPyk82wjB+BSWWUwVniSKHJjq3TmZnA1YKSaraGfJZfyQppK6AyqhxYw5l2SLHD896VyZw88p11qC2VBCKoQxn2fLOLJkRumCAclhC9mfMITyF/O5eLXzZEymts3SV160UAKvzPlqigzwdfxwPRDjawCRdKkoB/d1gbPu4qCaNm7B6pf6iG0TLIZXVWkX/GkPXZh40aBq/fU8ou2W87Ew3bK3AznXnN+t2k7t25sriz3sQUzpe7yaWUjnh5KUZ+fmuDsWpXj0cugorltYLFDKpoACKR99cQDoGcVS3RzYIFWLKto/0Ok4TVbL/5a2wrqfaxdJiLyTkzNeKDdd5/iQpSK+DN82iiONET4pHKI6zQ7/LcNzsAC7QrL7w+7F4VYqIqzKOfLpFNA4RjcUMCu/N6JK/kIHjW3cM2PTfZOBleZ7zfOfigTx2E7d+dTbC+ARjSbamJRwrnPFtumr4qVSsAm+H6Xn3YaqN4Tz05h/E=
+                  generated-by-azure
+          networkProfile:
+            loadBalancerSku: standard
+            networkPlugin: none
+          nodeResourceGroup: aks-20265576prod3
+          powerState:
+            code: Running
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          email: shobhit@rafay.co
+          env: dev
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-07-01"
+        location: centralindia
+        name: primary
+        properties:
+          count: 2
+          enableAutoScaling: true
+          maxCount: 2
+          maxPods: 40
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.32.3
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2023-07-01"
+        location: centralindia
+        name: sec
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          nodeLabels:
+            app: infra
+            dedicated: "true"
+          nodeTaints:
+          - app=infra:PreferNoSchedule
+          orchestratorVersion: 1.32.3
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2023-07-01"
+        location: centralindia
+        name: sec2dsdsss
+        properties:
+          count: 2
+          enableAutoScaling: true
+          kubeletConfig:
+            containerLogMaxFiles: 2
+          maxCount: 2
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.32.3
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  systemComponentsPlacement:
+    daemonSetOverride:
+      tolerations:
+      - effect: NoSchedule
+        key: app1dedicated
+        operator: Equal
+        value: "true"
+    nodeSelector:
+      app: infra
+      dedicated: "true"
+    tolerations:
+    - effect: PreferNoSchedule
+      key: app
+      operator: Equal
+      value: infra
+  type: aks

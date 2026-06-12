@@ -1,0 +1,68 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: awssj-sho
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+    version: Latest
+  cloudCredentials: aws-cred-shobhit-raut
+  config:
+    accessConfig:
+      authenticationMode: CONFIG_MAP
+    addons:
+    - name: coredns
+      version: v1.12.3-eksbuild.1
+    - name: vpc-cni
+      version: v1.20.4-eksbuild.2
+    - name: kube-proxy
+      version: v1.34.0-eksbuild.2
+    addonsConfig: {}
+    autoModeConfig: {}
+    autoZonalShiftConfig: {}
+    managedNodeGroups:
+    - amiFamily: AmazonLinux2023
+      desiredCapacity: 2
+      iam:
+        withAddonPolicies:
+          autoScaler: true
+      instanceTypes:
+      - t3.xlarge
+      maxSize: 2
+      minSize: 2
+      name: managedng
+      version: "1.34"
+      volumeSize: 80
+      volumeType: gp3
+    metadata:
+      name: awssj-sho
+      region: us-west-2
+      tags:
+        email: sj
+        env: qa
+      version: "1.34"
+    network:
+      cni:
+        name: aws-cni
+        params: {}
+    vpc:
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: true
+      nat:
+        gateway: Single
+      subnets:
+        private:
+          subnet-060163d4f1581ef6c:
+            id: subnet-060163d4f1581ef6c
+          subnet-0b3e5a2e4a25a3fa1:
+            id: subnet-0b3e5a2e4a25a3fa1
+        public:
+          subnet-00797e8b9511c6560:
+            id: subnet-00797e8b9511c6560
+          subnet-0fdd410bfb1c0cba8:
+            id: subnet-0fdd410bfb1c0cba8
+    zonalShiftConfig: {}
+  proxyConfig: {}
+  type: aws-eks

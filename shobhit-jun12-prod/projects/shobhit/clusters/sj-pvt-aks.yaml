@@ -1,0 +1,105 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: sj-pvt-aks
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: sj-pvt-aks
+    spec:
+      maintenanceConfigurations:
+      - apiVersion: "2023-11-01"
+        name: aksManagedAutoUpgradeSchedule
+        properties:
+          maintenanceWindow:
+            durationHours: 8
+            schedule:
+              absoluteMonthly:
+                dayOfMonth: 1
+                intervalMonths: 1
+            startDate: "2025-12-15"
+            startTime: "00:00"
+            utcOffset: "+00:00"
+        type: Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+      - apiVersion: "2023-11-01"
+        name: aksManagedNodeOSUpgradeSchedule
+        properties:
+          maintenanceWindow:
+            durationHours: 8
+            schedule:
+              absoluteMonthly:
+                dayOfMonth: 1
+                intervalMonths: 1
+            startDate: "2025-12-15"
+            startTime: "00:00"
+            utcOffset: "+00:00"
+        type: Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+      managedCluster:
+        apiVersion: "2023-11-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          addonProfiles:
+            azurePolicy:
+              enabled: false
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: NodeImage
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: sj-pvt-aks-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/MC_shobhit-rg_sj-pvt-aks_centralindia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sj-pvt-aks-agentpool
+          kubernetesVersion: 1.33.5
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkDataplane: azure
+            networkPlugin: azure
+            networkPluginMode: overlay
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: MC_shobhit-rg_sj-pvt-aks_centralindia
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+          windowsProfile:
+            adminUsername: azureuser
+            enableCSIProxy: true
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-11-01"
+        location: centralindia
+        name: agentpool
+        properties:
+          count: 3
+          maxPods: 110
+          mode: System
+          orchestratorVersion: 1.33.5
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig: {}
+  type: aks

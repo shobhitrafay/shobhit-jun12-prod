@@ -1,0 +1,71 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: shobhit-jul2-prod
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: shobhit-jul2-prod
+    spec:
+      managedCluster:
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            adminGroupObjectIds:
+            - 7138a054-8177-4bae-a5a8-c51519efba6c
+            managed: true
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: true
+          dnsPrefix: shobhit-jul2-prod-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.30.7
+          networkProfile:
+            loadBalancerSku: standard
+            networkPlugin: kubenet
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.30.7
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks

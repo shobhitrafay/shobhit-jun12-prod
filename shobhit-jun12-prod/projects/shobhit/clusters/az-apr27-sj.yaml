@@ -1,0 +1,61 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: az-apr27-sj
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: az-apr27-sj
+    spec:
+      bootstrapVmParams:
+        image:
+          id: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Compute/galleries/testgallerysj/images/cis-ubuntu-2404-trusted/versions/1.0.0
+          osState: Generalized
+        vmSize: Standard_B4ms
+      managedCluster:
+        apiVersion: "2025-01-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: az-apr27-sj-dns
+          enableRBAC: true
+          kubernetesVersion: 1.33.2
+          networkProfile:
+            loadBalancerSku: standard
+            networkPlugin: kubenet
+          powerState:
+            code: Stopped
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2025-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.33.2
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks

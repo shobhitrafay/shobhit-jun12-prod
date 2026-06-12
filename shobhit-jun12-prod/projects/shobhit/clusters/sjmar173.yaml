@@ -1,0 +1,69 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: sjmar173
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: default-aks
+    version: latest
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: sjmar173
+    spec:
+      bootstrapVmParams:
+        image:
+          id: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Compute/galleries/testgallerysj/images/cis-ubuntu-2404-trusted/versions/1.0.0
+          osState: Generalized
+        vmSize: Standard_B4ms
+      managedCluster:
+        apiVersion: "2025-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: sjmar17-dns3
+          enableRBAC: true
+          kubernetesVersion: 1.33.7
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPolicy: azure
+            serviceCidr: 10.0.0.0/16
+          powerState:
+            code: Stopped
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2025-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.33.7
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks

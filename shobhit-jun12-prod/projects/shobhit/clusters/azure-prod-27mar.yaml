@@ -1,0 +1,128 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: azure-prod-27mar
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: azure-prod-27mar
+    spec:
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: azure-prod-27mar-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.29.11
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: calico
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Stopped
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          email: shobhit@rafay.co
+          env: qa
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          nodeLabels:
+            key1: value1
+          nodeTaints:
+          - key1=value1:PreferNoSchedule
+          orchestratorVersion: 1.29.11
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: azwin
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.29.11
+          osType: Windows
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+      workloadIdentities:
+      - createIdentity: true
+        metadata:
+          location: centralindia
+          name: shobhit-mar27
+          resourceGroup: shobhit-rg
+          tags:
+            env: qa
+        roleAssignments:
+        - name: Key Vault Secrets User
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhitkeyvault2
+        serviceAccounts:
+        - createAccount: true
+          metadata:
+            annotations:
+              key1: value1
+            labels:
+              key1: value1
+            name: sa1
+            namespace: default
+  systemComponentsPlacement:
+    nodeSelector:
+      key1: value1
+    tolerations:
+    - effect: PreferNoSchedule
+      key: key1
+      operator: Equal
+      value: value1
+  type: aks

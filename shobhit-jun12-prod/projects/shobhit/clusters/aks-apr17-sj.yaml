@@ -1,0 +1,126 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: aks-apr17-sj
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: aks-apr17-sj
+    spec:
+      maintenanceConfigurations:
+      - apiVersion: "2024-01-01"
+        name: aksManagedNodeOSUpgradeSchedule
+        properties:
+          maintenanceWindow:
+            durationHours: 4
+            schedule:
+              relativeMonthly:
+                dayOfWeek: Sunday
+                intervalMonths: 1
+                weekIndex: First
+            startDate: "2025-04-17"
+            startTime: "00:00"
+            utcOffset: "+00:00"
+        type: Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: NodeImage
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: aks-apr17-sj-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.29.12
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: calico
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Stopped
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          email: shobhit@rafay.co
+          env: qa
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.29.12
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: sec
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.29.12
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: sys2
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.29.12
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks

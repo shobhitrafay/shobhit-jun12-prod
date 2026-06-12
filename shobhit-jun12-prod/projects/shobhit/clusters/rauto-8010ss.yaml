@@ -1,0 +1,205 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: rauto-8010ss
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: rauto-8010ss
+    spec:
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2025-10-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            enableAzureRBAC: true
+            managed: true
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "false"
+                rotationPollInterval: 2m
+              enabled: false
+            azurePolicy:
+              enabled: false
+            omsAgent:
+              config:
+                logAnalyticsWorkspaceResourceID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/defaultresourcegroup-cin/providers/microsoft.operationalinsights/workspaces/DefaultWorkspace-a2252eb2-7a25-432b-a5ec-e18eba6f26b1-CIN
+              enabled: true
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          disableLocalAccounts: true
+          dnsPrefix: aks-333-dns
+          enableRBAC: true
+          httpProxyConfig:
+            httpProxy: http://10.225.0.10:443/
+            httpsProxy: http://10.225.0.10:443/
+            noProxy:
+            - 10.0.0.0/16
+            - localhost
+            - 127.0.0.1
+            - ingress-controller-v1-controller-admission.rafay-system.svc
+            - secretstore-webhook.rafay-system.svc
+            - 10.225.0.0/24
+            - az-prox-26feb-dns-z9v3wwih.hcp.centralindia.azmk8s.io
+            - 10.244.0.0/16
+            - 10.224.0.0/12
+            - 169.254.169.254
+            - .hcp.centralindia.azmk8s.io
+            - 168.63.129.16
+            - konnectivity
+            - k8master.service.consul
+            - rafay-drift-v3.rafay-system.svc
+            - helloworld
+            - helloworld2
+            - helloworld3
+            - helloworld10
+            - asd
+            - aa
+            - pp
+            - ll
+            - ii
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          ingressProfile:
+            webAppRouting:
+              dnsZoneResourceIds:
+              - /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Network/dnsZones/shobhitzone.com
+              enabled: false
+          kubernetesVersion: 1.32.3
+          linuxProfile:
+            adminUsername: adminuser
+            ssh:
+              publicKeys:
+              - keyData: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsNWPqLqjrIPLjO9CK4xhcrIPyk82wjB+BSWWUwVniSKHJjq3TmZnA1YKSaraGfJZfyQppK6AyqhxYw5l2SLHD896VyZw88p11qC2VBCKoQxn2fLOLJkRumCAclhC9mfMITyF/O5eLXzZEymts3SV160UAKvzPlqigzwdfxwPRDjawCRdKkoB/d1gbPu4qCaNm7B6pf6iG0TLIZXVWkX/GkPXZh40aBq/fU8ou2W87Ew3bK3AznXnN+t2k7t25sriz3sQUzpe7yaWUjnh5KUZ+fmuDsWpXj0cugorltYLFDKpoACKR99cQDoGcVS3RzYIFWLKto/0Ok4TVbL/5a2wrqfaxdJiLyTkzNeKDdd5/iQpSK+DN82iiONET4pHKI6zQ7/LcNzsAC7QrL7w+7F4VYqIqzKOfLpFNA4RjcUMCu/N6JK/kIHjW3cM2PTfZOBleZ7zfOfigTx2E7d+dTbC+ARjSbamJRwrnPFtumr4qVSsAm+H6Xn3YaqN4Tz05h/E=
+                  generated-by-azure
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkDataplane: cilium
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: cilium
+            podCidr: 192.168.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: rauto-8010ss
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: false
+          serviceMeshProfile:
+            istio:
+              components:
+                ingressGateways:
+                - enabled: true
+                  mode: Internal
+              revisions:
+              - asm-1-26
+            mode: Istio
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          email: shobhit@rafay.co
+          env: dev
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-07-01"
+        location: centralindia
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 2
+          maxPods: 40
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.32.3
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2023-07-01"
+        location: centralindia
+        name: sec
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          nodeLabels:
+            app: infra
+            dedicated: "true"
+          nodeTaints:
+          - app=infra:PreferNoSchedule
+          orchestratorVersion: 1.32.3
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2023-07-01"
+        location: centralindia
+        name: sec2dsdsss
+        properties:
+          count: 1
+          creationData:
+            sourceResourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.ContainerService/snapshots/asdasd26jan
+          enableAutoScaling: true
+          kubeletConfig:
+            containerLogMaxFiles: 2
+          maxCount: 2
+          maxPods: 110
+          minCount: 1
+          mode: User
+          orchestratorVersion: 1.32.3
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig:
+    enabled: true
+    httpProxy: http://10.225.0.10:443/
+    httpsProxy: http://10.225.0.10:443/
+    noProxy: 10.0.0.0/16,localhost,127.0.0.1,ingress-controller-v1-controller-admission.rafay-system.svc,secretstore-webhook.rafay-system.svc,10.225.0.0/24,az-prox-26feb-dns-z9v3wwih.hcp.centralindia.azmk8s.io,10.244.0.0/16,10.224.0.0/12,169.254.169.254,.hcp.centralindia.azmk8s.io,168.63.129.16,konnectivity,k8master.service.consul,rafay-drift-v3.rafay-system.svc,helloworld,helloworld2,helloworld3,helloworld10,asd,aa,pp,ll,ii
+  systemComponentsPlacement:
+    daemonSetOverride:
+      tolerations:
+      - effect: NoSchedule
+        key: app1dedicated
+        operator: Equal
+        value: "true"
+    nodeSelector:
+      app: infra
+      dedicated: "true"
+    tolerations:
+    - effect: PreferNoSchedule
+      key: app
+      operator: Equal
+      value: infra
+  type: aks

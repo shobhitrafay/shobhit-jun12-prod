@@ -1,0 +1,207 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  labels:
+    asdas: asdas
+    key: value
+  name: aks-aug9-shobhit
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+    version: latest
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: aks-aug9-shobhit
+    spec:
+      maintenanceConfigurations:
+      - apiVersion: "2024-01-01"
+        name: aksManagedAutoUpgradeSchedule
+        properties:
+          maintenanceWindow:
+            durationHours: 5
+            schedule:
+              weekly:
+                dayOfWeek: Tuesday
+                intervalWeeks: 1
+            startDate: "2025-12-17"
+            startTime: "23:30"
+            utcOffset: "+05:30"
+        type: Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+      managedCluster:
+        additionalMetadata:
+          oms_workspace_location: centralindia
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            adminGroupObjectIds:
+            - e77135db-9039-42a5-a9db-c6afa3b84a9b
+            managed: true
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "true"
+                rotationPollInterval: ""
+              enabled: true
+            azurePolicy:
+              enabled: true
+            httpApplicationRouting:
+              enabled: false
+            omsAgent:
+              config:
+                logAnalyticsWorkspaceResourceID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/defaultresourcegroup-cin/providers/microsoft.operationalinsights/workspaces/DefaultWorkspace-a2252eb2-7a25-432b-a5ec-e18eba6f26b1-CIN
+              enabled: true
+          apiServerAccessProfile:
+            enablePrivateCluster: true
+            enablePrivateClusterPublicFQDN: false
+            privateDNSZone: System
+          autoScalerProfile:
+            balance-similar-node-groups: "false"
+            expander: random
+            max-empty-bulk-delete: "10"
+            max-graceful-termination-sec: "600"
+            max-node-provision-time: 15m
+            max-total-unready-percentage: "45"
+            new-pod-scale-up-delay: 10s
+            ok-total-unready-count: "3"
+            scale-down-delay-after-add: 10m
+            scale-down-delay-after-delete: 60s
+            scale-down-delay-after-failure: 3m
+            scale-down-unneeded-time: 10m
+            scale-down-unready-time: 20m
+            scale-down-utilization-threshold: "0.5"
+            scan-interval: 10s
+            skip-nodes-with-local-storage: "true"
+            skip-nodes-with-system-pods: "true"
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: NodeImage
+            upgradeChannel: patch
+          disableLocalAccounts: false
+          dnsPrefix: dnsaks-aug9-shobhit
+          enableRBAC: true
+          kubernetesVersion: 1.30.0
+          linuxProfile:
+            adminUsername: adminuser
+            ssh:
+              publicKeys:
+              - keyData: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsNWPqLqjrIPLjO9CK4xhcrIPyk82wjB+BSWWUwVniSKHJjq3TmZnA1YKSaraGfJZfyQppK6AyqhxYw5l2SLHD896VyZw88p11qC2VBCKoQxn2fLOLJkRumCAclhC9mfMITyF/O5eLXzZEymts3SV160UAKvzPlqigzwdfxwPRDjawCRdKkoB/d1gbPu4qCaNm7B6pf6iG0TLIZXVWkX/GkPXZh40aBq/fU8ou2W87Ew3bK3AznXnN+t2k7t25sriz3sQUzpe7yaWUjnh5KUZ+fmuDsWpXj0cugorltYLFDKpoACKR99cQDoGcVS3RzYIFWLKto/0Ok4TVbL/5a2wrqfaxdJiLyTkzNeKDdd5/iQpSK+DN82iiONET4pHKI6zQ7/LcNzsAC7QrL7w+7F4VYqIqzKOfLpFNA4RjcUMCu/N6JK/kIHjW3cM2PTfZOBleZ7zfOfigTx2E7d+dTbC+ARjSbamJRwrnPFtumr4qVSsAm+H6Xn3YaqN4Tz05h/E=
+                  generated-by-azure
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: Standard
+            networkPlugin: azure
+            networkPolicy: calico
+            podCidr: 192.168.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: aks-aug9-shobhit
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          key: value
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2021-05-01"
+        location: centralindia
+        name: primary
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 1
+          enableAutoScaling: true
+          maxCount: 40
+          maxPods: 40
+          minCount: 1
+          mode: System
+          nodeLabels:
+            app: infra
+          nodeTaints:
+          - app=infra:PreferNoSchedule
+          orchestratorVersion: 1.30.0
+          osDiskSizeGB: 35
+          osType: Linux
+          tags:
+            key: value
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2021-05-01"
+        location: centralindia
+        name: np5
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 2
+          enableAutoScaling: true
+          maxCount: 30
+          maxPods: 30
+          minCount: 1
+          mode: System
+          nodeLabels:
+            key: value
+          orchestratorVersion: 1.30.0
+          osDiskSizeGB: 35
+          osDiskType: Ephemeral
+          osType: Linux
+          scaleSetEvictionPolicy: Delete
+          scaleSetPriority: Regular
+          tags:
+            key: value
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  sharing:
+    enabled: true
+    projects:
+    - name: defaultproject
+  systemComponentsPlacement:
+    daemonSetOverride:
+      tolerations:
+      - effect: NoSchedule
+        key: app1dedicated
+        operator: Equal
+        value: "true"
+      - effect: NoSchedule
+        key: app1dedicated2
+        operator: Equal
+        value: true2
+    nodeSelector:
+      app: infra
+    tolerations:
+    - effect: PreferNoSchedule
+      key: app
+      operator: Equal
+      value: infra
+    - effect: NoSchedule
+      key: dedicated
+      operator: Equal
+      value: "true"
+    - effect: NoSchedule
+      key: CriticalAddonsOnly
+      operator: Equal
+      value: "true"
+  type: aks

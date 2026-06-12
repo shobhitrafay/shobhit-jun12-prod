@@ -1,0 +1,153 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: rauto-shobhit-jul23
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: rauto-shobhit-jul23
+    spec:
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          aadProfile:
+            adminGroupObjectIds:
+            - 7138a054-8177-4bae-a5a8-c51519efba6c
+            managed: true
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: true
+          dnsPrefix: rauto-shobhit-jul23-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.32.0
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: calico
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          email: shobhit@rafay.co
+          env: qa
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 3
+          enableAutoScaling: true
+          maxCount: 30
+          maxPods: 110
+          minCount: 1
+          mode: System
+          nodeTaints:
+          - CriticalAddonsOnly=true:NoSchedule
+          orchestratorVersion: 1.32.0
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: sec
+        properties:
+          count: 2
+          maxPods: 110
+          mode: System
+          orchestratorVersion: 1.32.0
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2024-01-01"
+        name: third
+        properties:
+          count: 2
+          maxPods: 110
+          mode: System
+          orchestratorVersion: 1.32.0
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B4ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+      workloadIdentities:
+      - createIdentity: true
+        metadata:
+          location: centralindia
+          name: jul23wi1
+          resourceGroup: shobhit-rg
+          tags:
+            email: shobhit
+            env: qa
+        roleAssignments:
+        - name: Key Vault Secrets User
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhitkeyvault2
+        - name: Key Vault Secrets Officer
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhit-keyvault
+        serviceAccounts:
+        - createAccount: true
+          metadata:
+            name: sa1
+            namespace: default
+        - createAccount: true
+          metadata:
+            name: sa2
+            namespace: default
+      - createIdentity: true
+        metadata:
+          location: centralindia
+          name: jul23wi22
+          resourceGroup: shobhit-rg
+        roleAssignments:
+        - name: Key Vault Secrets User
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhitkeyvault2
+        - name: Key Vault Secrets Officer
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhit-keyvault
+        serviceAccounts:
+        - createAccount: true
+          metadata:
+            name: sa3
+            namespace: default
+        - createAccount: true
+          metadata:
+            name: sa4
+            namespace: default
+  type: aks

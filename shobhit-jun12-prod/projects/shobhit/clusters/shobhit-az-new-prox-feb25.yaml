@@ -1,0 +1,97 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: shobhit-az-new-prox-feb25
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: shobhit-az-new-prox-feb25
+    spec:
+      managedCluster:
+        additionalMetadata:
+          acrProfile:
+            registries:
+            - acrName: shobhitfnfacr
+              resourceGroupName: shobhit-fnf-cluster-rg
+        apiVersion: "2024-01-01"
+        identity:
+          type: UserAssigned
+          userAssignedIdentities:
+            ? /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-fnf-cluster-identity
+            : {}
+        location: centralindia
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: shobhit-az-new-prox-feb25-dns
+          enableRBAC: true
+          httpProxyConfig:
+            httpProxy: http://10.225.0.10:443/
+            httpsProxy: http://10.225.0.10:443/
+            noProxy:
+            - .hcp.centralindia.azmk8s.io
+            - 10.224.0.0/12
+            - 10.0.0.0/16
+            - 169.254.169.254
+            - 168.63.129.16
+            - localhost
+            - konnectivity
+            - 10.244.0.0/16
+            - 127.0.0.1
+            - k8master.service.consul
+            - ingress-controller-v1-controller-admission.rafay-system.svc
+            - rafay-drift-v3.rafay-system.svc
+            - secretstore-webhook.rafay-system.svc
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-cluster-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/shobhit-kubelet-identity
+          kubernetesVersion: 1.30.1
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: azure
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          powerState:
+            code: Running
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          env: qa
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2024-01-01"
+        name: primary
+        properties:
+          count: 1
+          enableAutoScaling: true
+          maxCount: 1
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.30.1
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig:
+    enabled: true
+    httpProxy: http://10.225.0.10:443/
+    httpsProxy: http://10.225.0.10:443/
+    noProxy: .hcp.centralindia.azmk8s.io,10.224.0.0/12,10.0.0.0/16,169.254.169.254,168.63.129.16,localhost,konnectivity,10.244.0.0/16,127.0.0.1,k8master.service.consul,ingress-controller-v1-controller-admission.rafay-system.svc,rafay-drift-v3.rafay-system.svc,secretstore-webhook.rafay-system.svc
+  type: aks

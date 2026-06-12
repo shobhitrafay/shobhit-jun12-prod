@@ -1,0 +1,114 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: sj-6may
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: sj-6may
+    spec:
+      maintenanceConfigurations:
+      - apiVersion: "2023-11-01"
+        name: aksManagedAutoUpgradeSchedule
+        properties:
+          maintenanceWindow:
+            durationHours: 4
+            schedule:
+              weekly:
+                dayOfWeek: Sunday
+                intervalWeeks: 1
+            startDate: "2025-05-07"
+            startTime: "00:00"
+            utcOffset: "+00:00"
+        type: Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+      - apiVersion: "2023-11-01"
+        name: aksManagedNodeOSUpgradeSchedule
+        properties:
+          maintenanceWindow:
+            durationHours: 4
+            schedule:
+              weekly:
+                dayOfWeek: Sunday
+                intervalWeeks: 1
+            startDate: "2025-05-07"
+            startTime: "00:00"
+            utcOffset: "+00:00"
+        type: Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+      managedCluster:
+        apiVersion: "2023-11-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          addonProfiles:
+            azurePolicy:
+              enabled: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: NodeImage
+            upgradeChannel: patch
+          disableLocalAccounts: false
+          dnsPrefix: sj-6may-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/MC_shobhit-rg_sj-6may_centralindia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sj-6may-agentpool
+          kubernetesVersion: 1.31.7
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkDataplane: azure
+            networkPlugin: azure
+            networkPluginMode: overlay
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: MC_shobhit-rg_sj-6may_centralindia
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+          windowsProfile:
+            adminUsername: azureuser
+            enableCSIProxy: true
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-11-01"
+        location: centralindia
+        name: agentpool
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 2
+          enableAutoScaling: true
+          maxCount: 5
+          maxPods: 110
+          minCount: 2
+          mode: System
+          orchestratorVersion: 1.31.7
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig: {}
+  sharing:
+    enabled: true
+    projects:
+    - name: defaultproject
+    - name: manish-test
+  type: aks

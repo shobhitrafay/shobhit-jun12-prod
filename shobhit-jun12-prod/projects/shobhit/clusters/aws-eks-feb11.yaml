@@ -1,0 +1,56 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: aws-eks-feb11
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+    version: 4.0.0
+  cloudCredentials: aws-cred-shobhit-raut
+  config:
+    accessConfig:
+      authenticationMode: CONFIG_MAP
+    addons:
+    - name: coredns
+      version: v1.12.1-eksbuild.2
+    - name: vpc-cni
+      version: v1.20.4-eksbuild.2
+    - name: kube-proxy
+      version: v1.33.3-eksbuild.4
+    - name: aws-ebs-csi-driver
+      version: latest
+    addonsConfig: {}
+    autoModeConfig: {}
+    managedNodeGroups:
+    - amiFamily: AmazonLinux2023
+      desiredCapacity: 2
+      iam:
+        withAddonPolicies:
+          autoScaler: true
+      instanceTypes:
+      - t3.xlarge
+      maxSize: 2
+      minSize: 2
+      name: ng1
+      tags:
+        donotdelete: "true"
+      version: "1.33"
+      volumeSize: 80
+      volumeType: gp3
+    metadata:
+      name: aws-eks-feb11
+      region: us-west-2
+      version: "1.33"
+    network:
+      cni:
+        name: aws-cni
+    vpc:
+      cidr: 192.168.0.0/16
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: false
+      nat:
+        gateway: Single
+  proxyConfig: {}
+  type: aws-eks

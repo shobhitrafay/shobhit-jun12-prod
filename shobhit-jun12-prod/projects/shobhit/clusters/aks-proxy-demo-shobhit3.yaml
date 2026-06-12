@@ -1,0 +1,181 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  labels:
+    asdasda: saddsasddsa
+    dassad: sdasddsa
+  name: aks-proxy-demo-shobhit3
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: aks-proxy-demo-shobhit3
+    spec:
+      managedCluster:
+        apiVersion: "2023-11-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "false"
+                rotationPollInterval: 2m
+              enabled: true
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: NodeImage
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: aks-proxy--shobhit-rg-a2252e
+          enableRBAC: true
+          httpProxyConfig:
+            httpProxy: http://10.225.0.10:443/
+            httpsProxy: http://10.225.0.10:443/
+            noProxy:
+            - 10.0.0.0/16
+            - localhost
+            - 127.0.0.1
+            - ingress-controller-v1-controller-admission.rafay-system.svc
+            - secretstore-webhook.rafay-system.svc
+            - 10.225.0.0/24
+            - az-prox-26feb-dns-z9v3wwih.hcp.centralindia.azmk8s.io
+            - 10.244.0.0/16
+            - 10.224.0.0/12
+            - 169.254.169.254
+            - .hcp.centralindia.azmk8s.io
+            - 168.63.129.16
+            - konnectivity
+            - k8master.service.consul
+            - rafay-drift-v3.rafay-system.svc
+            - dingdong
+            - asd
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/MC_shobhit-rg_aks-proxy-demo-shobhit3_centralindia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks-proxy-demo-shobhit3-agentpool
+          ingressProfile:
+            webAppRouting:
+              dnsZoneResourceIds:
+              - /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/<resource_group_name>/providers/Microsoft.Network/dnszones/microsoftrafay.onmicrosoft.com
+              enabled: false
+              identity:
+                clientID: 0e8de89d-040a-43d5-be8b-c5e4e0f047f2
+                objectID: 16873585-1c69-437f-80f5-5c3457946272
+                resourceID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/MC_shobhit-rg_aks-proxy-demo-shobhit3_centralindia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/webapprouting-aks-proxy-demo-shobhit3
+              nginx:
+                defaultIngressControllerType: AnnotationControlled
+          kubernetesVersion: 1.32.10
+          linuxProfile:
+            adminUsername: azureuser
+            ssh:
+              publicKeys:
+              - keyData: |
+                  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCqxjOVzN8pGV5ECwApOe5rJ1Eq9KaJQHle+Zz2E9iNzIYp92RsIJveb5gxkHDbwEFi5lwD7bz1b+URgc/JVoIe/JqrnJ/uaX/2TUA3e4AOlTWh+6azLZ1ovcBTQJG6CeKB3xWW6NJ+TovYk2q09i9KXHlmwS2thbzUzsgAaX+MF28xwJgfaHN6WG6fAQvsmSEAiTKgaIKnAhtFvc0+Q2MG2yk2QLe0DkwX8CUY402livaEfdkEwgkunoczzi4FQN2XT8WolA4zGjrXvtT5AavciweYwgPBFr7YtCotnEF3d7Er0n9/mlpd2tE2G1t73m5972Ck69eqxXQ3UW3NiVhyk98L8G6GOhKRp0fNsVNiDVyvK4yrU7KH2IS14WGYCJUcSLeWBqF9SX4oXovjPLop//FLB5HmqgL9T2d5Qe7rvDBitF37U8FneGkDmAJvXtB7LoPpH7Ndr18ZDpIPSnIRW+yAZyMiVnBu3vQd1SmMHzd3p+BBcSVcyQzCiPvHZ7E= shobhitjain@Shobhits-MacBook-Pro.local
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkDataplane: cilium
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: cilium
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: MC_shobhit-rg_aks-proxy-demo-shobhit3_centralindia
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+          serviceMeshProfile:
+            istio:
+              components:
+                ingressGateways:
+                - enabled: true
+                  mode: Internal
+                - enabled: true
+                  mode: External
+              revisions:
+              - asm-1-27
+              - asm-1-28
+            mode: Istio
+          windowsProfile:
+            adminUsername: azureuser
+            enableCSIProxy: true
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-11-01"
+        location: centralindia
+        name: nplogs
+        properties:
+          count: 1
+          kubeletConfig:
+            containerLogMaxFiles: 2
+          maxPods: 250
+          mode: User
+          nodeImageVersion: AKSUbuntu-2204gen2containerd-202601.13.0
+          orchestratorVersion: 1.32.0
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2023-11-01"
+        location: centralindia
+        name: nodepool1
+        properties:
+          count: 3
+          creationData:
+            sourceResourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.ContainerService/snapshots/nodepool1
+          enableAutoScaling: true
+          maxCount: 20
+          maxPods: 250
+          minCount: 1
+          mode: System
+          nodeImageVersion: AKSUbuntu-2204gen2containerd-202601.13.0
+          orchestratorVersion: 1.32.10
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      - apiVersion: "2023-11-01"
+        location: centralindia
+        name: np2
+        properties:
+          count: 1
+          creationData:
+            sourceResourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.ContainerService/snapshots/nodepool1
+          maxPods: 250
+          mode: User
+          nodeImageVersion: AKSUbuntu-2204gen2containerd-202601.13.0
+          orchestratorVersion: 1.32.10
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig:
+    enabled: true
+    httpProxy: http://10.225.0.10:443/
+    httpsProxy: http://10.225.0.10:443/
+    noProxy: 10.0.0.0/16,localhost,127.0.0.1,ingress-controller-v1-controller-admission.rafay-system.svc,secretstore-webhook.rafay-system.svc,10.225.0.0/24,az-prox-26feb-dns-z9v3wwih.hcp.centralindia.azmk8s.io,10.244.0.0/16,10.224.0.0/12,169.254.169.254,.hcp.centralindia.azmk8s.io,168.63.129.16,konnectivity,k8master.service.consul,rafay-drift-v3.rafay-system.svc,dingdong,asd
+  type: aks

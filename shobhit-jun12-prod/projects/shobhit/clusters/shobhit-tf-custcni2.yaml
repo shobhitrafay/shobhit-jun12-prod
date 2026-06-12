@@ -1,0 +1,324 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: shobhit-tf-custcni2
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: aws-cred-shobhit-raut
+  config:
+    accessConfig:
+      authenticationMode: CONFIG_MAP
+    addons:
+    - name: aws-ebs-csi-driver
+      serviceAccountRoleARN: arn:aws:iam::211125364662:role/rafay-shobhit-tf-custcni2-addon-aws-ebs-csi-d-Role1-4hvbNQGEbg4T
+      version: v1.44.0-eksbuild.1
+    - name: coredns
+      version: v1.11.4-eksbuild.14
+    - name: kube-proxy
+      version: v1.30.11-eksbuild.5
+    - name: vpc-cni
+      serviceAccountRoleARN: arn:aws:iam::211125364662:role/rafay-shobhit-tf-custcni2-addon-vpc-cni-Role1-CVo0FjuppxlH
+      version: v1.19.5-eksbuild.3
+    addonsConfig: {}
+    autoModeConfig: {}
+    availabilityZones:
+    - us-west-2a
+    - us-west-2b
+    iam:
+      serviceAccounts:
+      - metadata:
+          name: default
+          namespace: default
+      - metadata:
+          name: default
+          namespace: kube-node-lease
+      - metadata:
+          name: default
+          namespace: kube-public
+      - metadata:
+          name: attachdetach-controller
+          namespace: kube-system
+      - metadata:
+          name: aws-cloud-provider
+          namespace: kube-system
+      - attachRoleARN: arn:aws:iam::211125364662:role/rafay-shobhit-tf-custcni2-addon-vpc-cni-Role1-CVo0FjuppxlH
+        metadata:
+          labels:
+            app.kubernetes.io/instance: aws-vpc-cni
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: aws-node
+            app.kubernetes.io/version: v1.19.5
+            helm.sh/chart: aws-vpc-cni-1.19.5
+            k8s-app: aws-node
+          name: aws-node
+          namespace: kube-system
+        tags:
+          alpha.rafay.io/addon-name: vpc-cni
+          alpha.rafay.io/cluster-name: shobhit-tf-custcni2
+          alpha.rafay.io/rafay-version: v2.12.0-1
+          alpha.rafay.io/stack-uuid: kg06jzm-cluster-81eb8cba-42a1-467d-a9b0-b90e7fa23717
+          email: kalyan@rafay.co
+          env: qa
+          rafay.cluster.k8s.io/v1alpha1/cluster-name: shobhit-tf-custcni2
+      - metadata:
+          name: certificate-controller
+          namespace: kube-system
+      - metadata:
+          name: clusterrole-aggregation-controller
+          namespace: kube-system
+      - metadata:
+          labels:
+            eks.amazonaws.com/component: coredns
+            k8s-app: kube-dns
+          name: coredns
+          namespace: kube-system
+      - metadata:
+          name: cronjob-controller
+          namespace: kube-system
+      - metadata:
+          name: daemon-set-controller
+          namespace: kube-system
+      - metadata:
+          name: default
+          namespace: kube-system
+      - metadata:
+          name: deployment-controller
+          namespace: kube-system
+      - metadata:
+          name: disruption-controller
+          namespace: kube-system
+      - attachRoleARN: arn:aws:iam::211125364662:role/rafay-shobhit-tf-custcni2-addon-aws-ebs-csi-d-Role1-4hvbNQGEbg4T
+        metadata:
+          labels:
+            app.kubernetes.io/component: csi-driver
+            app.kubernetes.io/managed-by: EKS
+            app.kubernetes.io/name: aws-ebs-csi-driver
+            app.kubernetes.io/version: 1.44.0
+          name: ebs-csi-controller-sa
+          namespace: kube-system
+        tags:
+          alpha.rafay.io/addon-name: aws-ebs-csi-driver
+          alpha.rafay.io/cluster-name: shobhit-tf-custcni2
+          alpha.rafay.io/rafay-version: v2.12.0-1
+          alpha.rafay.io/stack-uuid: kg06jzm-cluster-81eb8cba-42a1-467d-a9b0-b90e7fa23717
+          email: kalyan@rafay.co
+          env: qa
+          rafay.cluster.k8s.io/v1alpha1/cluster-name: shobhit-tf-custcni2
+      - metadata:
+          labels:
+            app.kubernetes.io/component: csi-driver
+            app.kubernetes.io/managed-by: EKS
+            app.kubernetes.io/name: aws-ebs-csi-driver
+            app.kubernetes.io/version: 1.44.0
+          name: ebs-csi-node-sa
+          namespace: kube-system
+      - metadata:
+          name: endpoint-controller
+          namespace: kube-system
+      - metadata:
+          name: endpointslice-controller
+          namespace: kube-system
+      - metadata:
+          name: endpointslicemirroring-controller
+          namespace: kube-system
+      - metadata:
+          name: ephemeral-volume-controller
+          namespace: kube-system
+      - metadata:
+          name: expand-controller
+          namespace: kube-system
+      - metadata:
+          name: generic-garbage-collector
+          namespace: kube-system
+      - metadata:
+          name: horizontal-pod-autoscaler
+          namespace: kube-system
+      - metadata:
+          name: job-controller
+          namespace: kube-system
+      - metadata:
+          labels:
+            eks.amazonaws.com/component: kube-proxy
+            k8s-app: kube-proxy
+          name: kube-proxy
+          namespace: kube-system
+      - metadata:
+          name: legacy-service-account-token-cleaner
+          namespace: kube-system
+      - metadata:
+          name: namespace-controller
+          namespace: kube-system
+      - metadata:
+          name: node-controller
+          namespace: kube-system
+      - metadata:
+          name: persistent-volume-binder
+          namespace: kube-system
+      - metadata:
+          name: pod-garbage-collector
+          namespace: kube-system
+      - metadata:
+          name: pv-protection-controller
+          namespace: kube-system
+      - metadata:
+          name: pvc-protection-controller
+          namespace: kube-system
+      - metadata:
+          name: replicaset-controller
+          namespace: kube-system
+      - metadata:
+          name: replication-controller
+          namespace: kube-system
+      - metadata:
+          name: resourcequota-controller
+          namespace: kube-system
+      - metadata:
+          name: root-ca-cert-publisher
+          namespace: kube-system
+      - metadata:
+          name: service-account-controller
+          namespace: kube-system
+      - metadata:
+          name: service-controller
+          namespace: kube-system
+      - metadata:
+          name: statefulset-controller
+          namespace: kube-system
+      - metadata:
+          name: tagging-controller
+          namespace: kube-system
+      - metadata:
+          name: ttl-after-finished-controller
+          namespace: kube-system
+      - metadata:
+          name: ttl-controller
+          namespace: kube-system
+      - metadata:
+          name: validatingadmissionpolicy-status-controller
+          namespace: kube-system
+      - metadata:
+          name: default
+          namespace: rafay-infra
+      - metadata:
+          name: default
+          namespace: rafay-system
+      - metadata:
+          labels:
+            authz-expiry: "1749672682"
+            authz-refreshed: "1749643882"
+            rafay-permission: kubectl.fullaccess
+            rafay-relay: "true"
+            relay-user: rs-45admin-64rafay-46co
+          name: rs-45admin-64rafay-46co
+          namespace: rafay-system
+      - metadata:
+          labels:
+            authz-expiry: "1749672681"
+            authz-refreshed: "1749643881"
+            k8smgmt.io/project: shobhit
+            rafay-permission: kubectl.fullaccess
+            rafay-relay: "true"
+            relay-user: shobhit-64rafay-46co
+          name: shobhit-64rafay-46co
+          namespace: rafay-system
+      - metadata:
+          annotations:
+            kubectl.kubernetes.io/last-applied-configuration: |
+              {"apiVersion":"v1","kind":"ServiceAccount","metadata":{"annotations":{"meta.helm.sh/release-name":"v2-infra","meta.helm.sh/release-namespace":"rafay-system"},"labels":{"app.kubernetes.io/managed-by":"Helm"},"name":"system-sa","namespace":"rafay-system"}}
+            meta.helm.sh/release-name: v2-infra
+            meta.helm.sh/release-namespace: rafay-system
+            rafay.dev/original: '{"kind":"ServiceAccount","metadata":{"name":"system-sa","labels":{"app.kubernetes.io/managed-by":"Helm","rep-drift-reconcillation":"enabled"},"namespace":"rafay-system","annotations":{"meta.helm.sh/release-name":"v2-infra","meta.helm.sh/release-namespace":"rafay-system","rep-drift-action":"deny","rafay.dev/random":"lcfZcDyqIV"}},"apiVersion":"v1"}'
+            rafay.dev/ownerRef: '{"apiVersion":"cluster.rafay.dev/v2","kind":"Namespace","name":"rafay-system","uid":"25a1a9b1-572d-4a6a-86a6-efa4dc47bb98","controller":true,"blockOwnerDeletion":true}'
+            rafay.dev/random: lcfZcDyqIV
+            rep-drift-action: deny
+          labels:
+            app.kubernetes.io/managed-by: Helm
+            k8smgmt.io/project: shobhit
+            rep-addon: v2-infra
+            rep-cluster: 29763nm
+            rep-cluster-name: shobhit-tf-custcni2
+            rep-drift-reconcillation: enabled
+            rep-organization: 5m18rky
+            rep-partner: rx28oml
+            rep-placement: 24rzly7
+            rep-project: dkgzqr2
+            rep-project-name: shobhit
+            rep-workloadid: k6l75qk
+          name: system-sa
+          namespace: rafay-system
+      serviceRoleARN: arn:aws:iam::211125364662:role/rafay-shobhit-tf-custcni2-cluster-ServiceRole-qBQA1uQv4cMn
+      withOIDC: true
+    managedNodeGroups:
+    - amiFamily: AmazonLinux2
+      availabilityZones:
+      - us-west-2a
+      - us-west-2b
+      desiredCapacity: 2
+      iam:
+        instanceRoleARN: arn:aws:iam::211125364662:role/rafay-shobhit-tf-custcni2-nodegrou-NodeInstanceRole-bxLgywmfo2Cv
+      instanceType: t3.xlarge
+      labels:
+        alpha.rafay.io/cluster-name: shobhit-tf-custcni2
+        alpha.rafay.io/nodegroup-name: mgng1
+      maxSize: 4
+      name: mgng1
+      privateNetworking: true
+      securityGroups:
+        attachIDs:
+        - sg-084b0f7d81b6901b5
+      subnets:
+      - subnet-049db2ae412b50c34
+      - subnet-0e18080ffc4aba4ca
+      tags:
+        alpha.eksctl.io/cluster-oidc-enabled: "true"
+        alpha.rafay.io/cluster-name: shobhit-tf-custcni2
+        alpha.rafay.io/nodegroup-name: mgng1
+        alpha.rafay.io/nodegroup-type: managed
+        alpha.rafay.io/rafay-version: v2.12.0-1
+        email: kalyan@rafay.co
+        env: qa
+        rafay.cluster.k8s.io/v1alpha1/cluster-name: shobhit-tf-custcni2
+      volumeSize: 80
+      volumeType: gp3
+    metadata:
+      name: shobhit-tf-custcni2
+      region: us-west-2
+      tags:
+        alpha.eksctl.io/cluster-oidc-enabled: "true"
+        alpha.rafay.io/cluster-name: shobhit-tf-custcni2
+        alpha.rafay.io/rafay-version: v2.12.0-1
+        alpha.rafay.io/stack-uuid: kg06jzm-cluster-81eb8cba-42a1-467d-a9b0-b90e7fa23717
+        email: kalyan@rafay.co
+        env: qa
+      version: "1.30"
+    network:
+      cni:
+        name: aws-cni
+        params:
+          customCniCrdSpec:
+            us-west-2a:
+            - subnet: subnet-0e18080ffc4aba4ca
+            us-west-2b:
+            - subnet: subnet-049db2ae412b50c34
+    vpc:
+      cidr: 192.168.0.0/16
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: true
+      id: vpc-03ae8a63e1b65cb9d
+      securityGroup: sg-07538f5d9a0bf423b
+      subnets:
+        private:
+          subnet-049db2ae412b50c34:
+            id: subnet-049db2ae412b50c34
+          subnet-0e18080ffc4aba4ca:
+            id: subnet-0e18080ffc4aba4ca
+        public:
+          subnet-0a430cbb5a20c8a0d:
+            id: subnet-0a430cbb5a20c8a0d
+          subnet-0f2bda309fb10b0c0:
+            id: subnet-0f2bda309fb10b0c0
+  proxyConfig: {}
+  type: aws-eks

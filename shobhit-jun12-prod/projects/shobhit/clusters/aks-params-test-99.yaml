@@ -1,0 +1,95 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: aks-params-test-99
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: aks-params-test-99
+    spec:
+      bootstrapVmParams:
+        image:
+          id: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Compute/galleries/testgallerysj/images/cis-ubuntu-2404-trusted/versions/1.0.0
+          osState: Generalized
+        trustedLaunch: true
+        vmSize: Standard_B1ms
+      managedCluster:
+        apiVersion: "2025-10-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "true"
+                rotationPollInterval: 6m
+              enabled: true
+            azurePolicy:
+              enabled: true
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: NodeImage
+            upgradeChannel: patch
+          disableLocalAccounts: false
+          diskEncryptionSetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg-centralinida/providers/Microsoft.Compute/diskEncryptionSets/shobhit-disk-encry-set
+          dnsPrefix: aks-params-test-99-dns
+          enableRBAC: true
+          ingressProfile:
+            webAppRouting:
+              enabled: true
+              nginx:
+                defaultIngressControllerType: Internal
+          kubernetesVersion: 1.33.1
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkDataplane: azure
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: none
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeResourceGroup: MC_shobhit-rg_aks-params-test-9_centralindia
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+        sku:
+          name: Base
+          tier: Free
+        tags:
+          Environment: Development
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-11-01"
+        name: agentpool
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 1
+          maxPods: 110
+          mode: System
+          nodeImageVersion: AKSUbuntu-2204gen2containerd-202512.06.0
+          orchestratorVersion: 1.33.1
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_B4ms
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks
