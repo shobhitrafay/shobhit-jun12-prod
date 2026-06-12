@@ -47,4 +47,5 @@ spec:
     enabled: true
     projects:
     - name: shobhittest1
+      id: mplgpz2
   type: gke
