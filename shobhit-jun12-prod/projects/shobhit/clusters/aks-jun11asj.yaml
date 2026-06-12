@@ -54,7 +54,7 @@ spec:
         type: Microsoft.ContainerService/managedClusters/agentPools
       resourceGroupName: shobhit-rg
   sharing:
-    enabled: true
+    enabled: false
     projects:
     - name: zahoor-prod
     - name: wavelength
