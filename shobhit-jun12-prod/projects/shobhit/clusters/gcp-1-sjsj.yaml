@@ -43,4 +43,9 @@ spec:
         strategy: SURGE
     releaseChannel:
       channel: EXTENDED
+  sharing:
+    enabled: true
+    projects:
+    - name: shobhittest1
+    - name: shobhit-64rafay-46co
   type: gke
