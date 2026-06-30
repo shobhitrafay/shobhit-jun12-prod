@@ -23,7 +23,7 @@ spec:
             enablePrivateClusterPublicFQDN: false
           autoUpgradeProfile:
             nodeOsUpgradeChannel: None
-            upgradeChannel: none
+            upgradeChannel: patch
           disableLocalAccounts: false
           dnsPrefix: dasads-dns
           enableRBAC: true
