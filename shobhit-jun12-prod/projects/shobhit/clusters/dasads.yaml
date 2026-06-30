@@ -6,7 +6,7 @@ metadata:
 spec:
   blueprintConfig:
     name: minimal
-  cloudCredentials: shobhit_azure2
+  cloudCredentials: kmkm
   config:
     kind: aksClusterConfig
     metadata:
