@@ -27,7 +27,7 @@ spec:
           disableLocalAccounts: false
           dnsPrefix: dasads-dns
           enableRBAC: true
-          kubernetesVersion: 1.34.2
+          kubernetesVersion: 1.34.8
           networkProfile:
             loadBalancerSku: standard
             networkPlugin: kubenet
