@@ -9,7 +9,7 @@ spec:
     version: latest
   cloudCredentials: gke
   config:
-    controlPlaneVersion: "1.35"
+    controlPlaneVersion: "1.36"
     features:
       enableComputeEnginePersistentDiskCSIDriver: true
     gcpProject: qa-automation-371111
@@ -35,7 +35,7 @@ spec:
       management:
         autoUpgrade: true
       name: default-nodepool
-      nodeVersion: "1.35"
+      nodeVersion: "1.36"
       size: 3
       upgradeSettings:
         config:
