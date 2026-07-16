@@ -27,7 +27,7 @@ spec:
           disableLocalAccounts: false
           dnsPrefix: azure-sj-jul16-dns
           enableRBAC: true
-          kubernetesVersion: 1.35.0
+          kubernetesVersion: 1.36.0
           networkProfile:
             loadBalancerSku: standard
             networkPlugin: kubenet
