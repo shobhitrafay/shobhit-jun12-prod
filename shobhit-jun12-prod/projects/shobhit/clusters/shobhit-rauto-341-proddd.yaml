@@ -7,7 +7,7 @@ metadata:
     asd: sa
     sa: ddsdsds
     sssss: sjsj
-  name: shobhit-rauto-341-prodd
+  name: shobhit-rauto-341-proddd
   project: shobhit
 spec:
   blueprintConfig:
@@ -134,7 +134,7 @@ spec:
         - groupname
         username: user
     metadata:
-      name: shobhit-rauto-341-prodd
+      name: shobhit-rauto-341-proddd
       region: us-east-1
       tags:
         donotdelete: "true"
