@@ -1,0 +1,155 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  labels:
+    App: rafay-managed-cluster
+    Env: Rafay-test
+    asd: sa
+    sa: ddsdsds
+    sssss: sjsj
+  name: shobhit-rauto-341-prodd
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+    version: latest
+  cloudCredentials: shobhit_aws
+  config:
+    accessConfig:
+      accessEntries:
+      - kubernetesGroups:
+        - groupname
+        kubernetesUsername: user
+        principalARN: arn:aws:iam::211125364662:user/kalyan@rafay.co
+        type: STANDARD
+      authenticationMode: API_AND_CONFIG_MAP
+      bootstrapClusterCreatorAdminPermissions: true
+    addons:
+    - name: aws-efs-csi-driver
+      version: latest
+    - name: eks-pod-identity-agent
+      version: latest
+    - name: coredns
+      version: latest
+    - name: kube-proxy
+      version: latest
+    - name: vpc-cni
+      version: latest
+    - name: aws-ebs-csi-driver
+      version: latest
+    availabilityZones:
+    - us-east-1a
+    - us-east-1b
+    fargateProfiles:
+    - name: rauto-fg-1
+      selectors:
+      - namespace: rafay-systems
+      - namespace: kube-systems
+      - namespace: sasdada
+    - name: rauto-fg-2
+      selectors:
+      - namespace: rafay-systems
+      - namespace: kube-systems
+      - namespace: sasdadas
+    - name: rauto-fg-3
+      selectors:
+      - namespace: rafay-systems
+      - namespace: kube-systems
+      - namespace: sasdadas
+    - name: rauto-fg-4
+      selectors:
+      - namespace: rafay-system
+      - namespace: kube-system
+      - namespace: sasdadas
+    iam:
+      serviceAccounts:
+      - attachPolicy:
+          Statement:
+          - Action: ec2:Describe*
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:AttachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:DetachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - elasticloadbalancing:*
+            Effect: Allow
+            Resource:
+            - '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa
+          namespace: yaml1
+        roleOnly: false
+      - attachPolicy:
+          Statement:
+          - Action: ec2:Describe*
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:AttachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:DetachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - elasticloadbalancing:*
+            Effect: Allow
+            Resource:
+            - '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa3
+          namespace: yaml3
+        roleOnly: false
+      - attachPolicy:
+          Statement:
+          - Action: ec2:Describe*
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:AttachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:DetachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - elasticloadbalancing:*
+            Effect: Allow
+            Resource:
+            - '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa4
+          namespace: yaml3
+        roleOnly: false
+      withOIDC: true
+    identityMappings:
+      arns:
+      - arn: arn:aws:iam::211125364662:user/kalyan@rafay.co
+        group:
+        - groupname
+        username: user
+    metadata:
+      name: shobhit-rauto-341-prodd
+      region: us-east-1
+      tags:
+        donotdelete: "true"
+        email: shobhit@rafay.co
+        env: qa
+      version: "1.34"
+    network:
+      cni:
+        name: aws-cni
+    vpc:
+      autoAllocateIPv6: false
+      cidr: 192.168.0.0/16
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: true
+      nat:
+        gateway: Single
+  type: aws-eks
