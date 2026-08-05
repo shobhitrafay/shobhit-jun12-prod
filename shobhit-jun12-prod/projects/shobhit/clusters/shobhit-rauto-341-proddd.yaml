@@ -11,7 +11,7 @@ metadata:
   project: shobhit
 spec:
   blueprintConfig:
-    name: minimal
+    name: default
     version: latest
   cloudCredentials: shobhit_aws
   config:
