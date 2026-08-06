@@ -1,0 +1,93 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: az-centralis-sjn
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: sj-aug3
+    spec:
+      managedCluster:
+        apiVersion: "2023-11-01"
+        identity:
+          type: SystemAssigned
+        location: centralindia
+        properties:
+          addonProfiles:
+            azureKeyvaultSecretsProvider:
+              config:
+                enableSecretRotation: "false"
+                rotationPollInterval: ""
+              enabled: false
+            azurePolicy:
+              enabled: false
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: sj-aug3-dns
+          enableRBAC: true
+          identityProfile:
+            kubeletIdentity:
+              resourceId: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourcegroups/MC_shobhit-rg_sj-aug3_centralindia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sj-aug3-agentpool
+          kubernetesVersion: 1.35.6
+          networkProfile:
+            dnsServiceIP: 10.0.0.10
+            loadBalancerSku: standard
+            networkDataplane: azure
+            networkPlugin: azure
+            networkPluginMode: overlay
+            networkPolicy: none
+            podCidr: 10.244.0.0/16
+            serviceCidr: 10.0.0.0/16
+          nodeProvisioningProfile:
+            mode: Manual
+          nodeResourceGroup: MC_shobhit-rg_sj-aug3_centralindia
+          oidcIssuerProfile:
+            enabled: true
+          powerState:
+            code: Running
+          securityProfile:
+            workloadIdentity:
+              enabled: true
+          windowsProfile:
+            adminUsername: azureuser
+            enableCSIProxy: true
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2023-11-01"
+        name: agentpool
+        properties:
+          availabilityZones:
+          - "1"
+          - "2"
+          - "3"
+          count: 2
+          enableAutoScaling: true
+          maxCount: 5
+          maxPods: 110
+          minCount: 2
+          mode: System
+          nodeImageVersion: AKSUbuntu-2404gen2containerd-202607.29.0
+          orchestratorVersion: 1.35.6
+          osDiskSizeGB: 128
+          osType: Linux
+          type: VirtualMachineScaleSets
+          upgradeSettings:
+            maxSurge: 10%
+          vmSize: Standard_DS2_v2
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  proxyConfig: {}
+  type: aks
