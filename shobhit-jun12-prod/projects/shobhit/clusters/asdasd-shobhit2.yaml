@@ -1,0 +1,59 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: asdasd-shobhit2
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+  cloudCredentials: shobhit_azure2
+  config:
+    kind: aksClusterConfig
+    metadata:
+      name: asdasd-shobhit2
+    spec:
+      managedCluster:
+        apiVersion: "2025-05-01"
+        identity:
+          type: SystemAssigned
+        location: uaenorth
+        properties:
+          apiServerAccessProfile:
+            enablePrivateCluster: false
+            enablePrivateClusterPublicFQDN: false
+          autoUpgradeProfile:
+            nodeOsUpgradeChannel: None
+            upgradeChannel: none
+          disableLocalAccounts: false
+          dnsPrefix: asdasd-shobhit-dns2
+          enableRBAC: true
+          kubernetesVersion: 1.34.7
+          networkProfile:
+            dnsServiceIP: 10.1.0.10
+            loadBalancerSku: standard
+            networkPlugin: azure
+            serviceCidr: 10.1.0.0/16
+          powerState:
+            code: Running
+        sku:
+          name: Base
+          tier: Free
+        type: Microsoft.ContainerService/managedClusters
+      nodePools:
+      - apiVersion: "2025-05-01"
+        name: primary
+        properties:
+          count: 2
+          enableAutoScaling: true
+          maxCount: 2
+          maxPods: 110
+          minCount: 1
+          mode: System
+          orchestratorVersion: 1.34.7
+          osType: Linux
+          type: VirtualMachineScaleSets
+          vmSize: Standard_B2ms
+          vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.Network/virtualNetworks/uaenorth/subnets/default
+        type: Microsoft.ContainerService/managedClusters/agentPools
+      resourceGroupName: shobhit-rg
+  type: aks
