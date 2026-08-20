@@ -34,7 +34,7 @@ spec:
             networkPlugin: azure
             serviceCidr: 10.1.0.0/16
           powerState:
-            code: Running
+            code: Stopped
         sku:
           name: Base
           tier: Free
