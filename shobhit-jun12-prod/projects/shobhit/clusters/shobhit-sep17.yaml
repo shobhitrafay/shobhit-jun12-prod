@@ -1,0 +1,348 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: shobhit-sep17
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+    version: latest
+  cloudCredentials: shobhit_aws
+  config:
+    accessConfig:
+      accessEntries:
+      - accessPolicies:
+        - accessScope:
+            namespaces:
+            - default
+            - kube-system
+            type: namespace
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy
+        - accessScope:
+            type: cluster
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy
+        kubernetesUsername: chai
+        principalARN: arn:aws:iam::211125364662:user/chaitanya@rafay.co
+        type: STANDARD
+      - accessPolicies:
+        - accessScope:
+            namespaces:
+            - default
+            - kube-system
+            type: namespace
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy
+        - accessScope:
+            type: cluster
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy
+        kubernetesUsername: userrafay
+        principalARN: arn:aws:iam::211125364662:user/shobhit@rafay.co
+        type: STANDARD
+      - accessPolicies:
+        - accessScope:
+            type: cluster
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy
+        - accessScope:
+            type: cluster
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy
+        - accessScope:
+            type: cluster
+          policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy
+        kubernetesUsername: vip
+        principalARN: arn:aws:iam::211125364662:user/kalyan@rafay.co
+        tags:
+          tag-test: uday-tag
+        type: STANDARD
+      authenticationMode: API_AND_CONFIG_MAP
+      bootstrapClusterCreatorAdminPermissions: true
+    addons:
+    - attachPolicy:
+        Statement:
+        - Action:
+          - ec2:Describe*
+          - sts:AssumeRole
+          Condition:
+            StringEquals:
+              ec2:CreateAction:
+              - CreateVolume
+              - AttachVolume
+          Effect: Allow
+          Resource: '*'
+        Version: "2012-10-17"
+      name: coredns
+      version: latest
+    - attachPolicy:
+        Statement:
+        - Condition:
+            StringEquals:
+              aws:username: rafay-kalyan
+          Effect: Allow
+          NotAction:
+          - ec2:Describe*
+          Resource:
+          - '*'
+        Version: "2012-10-17"
+      name: kube-proxy
+      version: latest
+    - name: aws-ebs-csi-driver
+      podIdentityAssociations:
+      - namespace: kube-system
+        permissionPolicyARNs:
+        - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+        serviceAccountName: ebs-csi-controller-sa
+      version: latest
+    - name: eks-node-monitoring-agent
+      version: latest
+    - name: eks-pod-identity-agent
+      version: latest
+    - name: vpc-cni
+      version: latest
+    iam:
+      serviceAccounts:
+      - attachPolicy:
+          Statement:
+          - Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:ListBucket
+            Effect: Allow
+            Resource: '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa-s3
+          namespace: yaml1
+        roleOnly: false
+      - attachPolicy:
+          Statement:
+          - Action:
+            - secretsmanager:GetSecretValue
+            - secretsmanager:DescribeSecret
+            Effect: Allow
+            Resource: '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa-secrets
+          namespace: yaml1
+        roleOnly: false
+      - attachPolicy:
+          Statement:
+          - Action:
+            - secretsmanager:GetSecretValue
+            - secretsmanager:DescribeSecret
+            Effect: Allow
+            Resource: '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa-secrets5
+          namespace: yaml1
+        roleOnly: false
+      - attachPolicy:
+          Statement:
+          - Action: ec2:Describe*
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - ec2:AttachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:DetachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - elasticloadbalancing:*
+            Effect: Allow
+            Resource:
+            - '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa
+          namespace: yaml1
+        roleOnly: false
+      - attachPolicy:
+          Statement:
+          - Action: ec2:Describe*
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - ec2:AttachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action: ec2:DetachVolume
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - elasticloadbalancing:*
+            Effect: Allow
+            Resource:
+            - '*'
+          Version: "2012-10-17"
+        metadata:
+          name: test-irsa-day-2
+          namespace: yaml1
+        roleOnly: false
+      withOIDC: true
+    identityMappings:
+      arns:
+      - arn: arn:aws:iam::211125364662:user/manish@rafay.co
+        group:
+        - system:masters
+        username: manish
+      - arn: arn:aws:iam::211125364662:user/pranay.jugge@rafay.co
+        group:
+        - system:masters
+        username: shobrafay
+    managedNodeGroups:
+    - amiFamily: Ubuntu2404
+      desiredCapacity: 1
+      disableIMDSv1: false
+      disablePodIMDS: false
+      ebsOptimized: false
+      efaEnabled: false
+      enableDetailedMonitoring: false
+      instanceType: t3.medium
+      labels:
+        key: rauto
+      maxPodsPerNode: 0
+      maxSize: 2
+      minSize: 1
+      name: ng-ubuntu2404
+      privateNetworking: true
+      spot: false
+      tags:
+        donotdelete: "true"
+        email: uday.kumar@rafay.co
+        env: qa
+      taints:
+      - effect: NoSchedule
+        key: nodeInfra
+        value: rauto
+      version: "1.33"
+      volumeEncrypted: false
+      volumeIOPS: 3000
+      volumeSize: 80
+      volumeThroughput: 125
+      volumeType: gp3
+    - amiFamily: AmazonLinux2023
+      desiredCapacity: 2
+      disableIMDSv1: false
+      disablePodIMDS: false
+      ebsOptimized: false
+      efaEnabled: false
+      enableDetailedMonitoring: false
+      instanceType: t3.medium
+      labels:
+        key: rauto
+      maxPodsPerNode: 0
+      maxSize: 2
+      minSize: 1
+      name: ng-amazonlinux2023
+      privateNetworking: true
+      spot: false
+      tags:
+        donotdelete: "true"
+        email: uday.kumar@rafay.co
+        env: qa
+      taints:
+      - effect: NoSchedule
+        key: nodeInfra
+        value: rauto
+      version: "1.33"
+      volumeEncrypted: false
+      volumeIOPS: 3000
+      volumeSize: 80
+      volumeThroughput: 125
+      volumeType: gp3
+    metadata:
+      name: shobhit-sep17
+      region: us-west-2
+      tags:
+        donotdelete: "true"
+        email: uday.kumar@rafay.co
+        env: qa
+      version: "1.33"
+    network:
+      cni:
+        name: aws-cni
+        params:
+          customCniCrdSpec:
+            us-west-2b:
+            - subnet: subnet-049bdbc6d83df0c1d
+            us-west-2c:
+            - subnet: subnet-0d52a90e9560fc6a8
+            us-west-2d:
+            - subnet: subnet-08c68e5a33b3171ba
+    nodeGroups:
+    - amiFamily: AmazonLinux2023
+      desiredCapacity: 1
+      disableIMDSv1: false
+      disablePodIMDS: false
+      ebsOptimized: false
+      efaEnabled: false
+      enableDetailedMonitoring: false
+      instanceType: t3.medium
+      labels:
+        key: rauto
+      maxSize: 4
+      minSize: 1
+      name: ng-self-fully-loaded
+      privateNetworking: true
+      securityGroups:
+        attachIDs:
+        - sg-0e577ff06ea88cf1c
+        - sg-0a618212e4966fbac
+        withLocal: true
+        withShared: true
+      subnets:
+      - subnet-003a8fb895010a199
+      - subnet-0620572cf6768edb7
+      tags:
+        donotdelete: "true"
+        email: uday.kumar@rafay.co
+        env: qa
+      taints:
+      - effect: NoSchedule
+        key: nodeInfra
+        value: rauto
+      version: "1.33"
+      volumeEncrypted: false
+      volumeIOPS: 3000
+      volumeSize: 80
+      volumeThroughput: 125
+      volumeType: gp3
+    secretsEncryption:
+      keyARN: arn:aws:kms:us-west-2:211125364662:key/7a36adfd-05b2-47dd-a93e-7e46b39564d4
+    vpc:
+      autoAllocateIPv6: false
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: true
+      controlPlaneSecurityGroupIDs:
+      - sg-0fefe5add122702b3
+      - sg-095827a9366725d03
+      nat:
+        gateway: Single
+      subnets:
+        private:
+          subnet-003a8fb895010a199:
+            id: subnet-003a8fb895010a199
+          subnet-00eea52be80887c65:
+            id: subnet-00eea52be80887c65
+          subnet-0620572cf6768edb7:
+            id: subnet-0620572cf6768edb7
+        public:
+          subnet-08c3d171dc4dfba34:
+            id: subnet-08c3d171dc4dfba34
+          subnet-01756fef947ef6757:
+            id: subnet-01756fef947ef6757
+          subnet-0257882896d37ebcc:
+            id: subnet-0257882896d37ebcc
+  systemComponentsPlacement:
+    daemonSetOverride:
+      tolerations:
+      - operator: Exists
+    nodeSelector:
+      key: rauto
+    tolerations:
+    - effect: NoSchedule
+      key: nodeInfra
+      operator: Exists
+  type: aws-eks
