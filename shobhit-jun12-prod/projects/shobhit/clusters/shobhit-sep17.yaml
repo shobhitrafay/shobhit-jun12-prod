@@ -215,7 +215,7 @@ spec:
       - effect: NoSchedule
         key: nodeInfra
         value: rauto
-      version: "1.33"
+      version: "1.34"
       volumeEncrypted: false
       volumeIOPS: 3000
       volumeSize: 80
