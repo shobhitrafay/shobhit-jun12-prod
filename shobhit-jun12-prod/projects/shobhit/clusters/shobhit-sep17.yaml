@@ -191,8 +191,8 @@ spec:
         - system:masters
         username: shobrafay
     managedNodeGroups:
-    - amiFamily: Ubuntu2404
-      desiredCapacity: 1
+    - amiFamily: AmazonLinux2023
+      desiredCapacity: 2
       disableIMDSv1: false
       disablePodIMDS: false
       ebsOptimized: false
@@ -204,7 +204,7 @@ spec:
       maxPodsPerNode: 0
       maxSize: 2
       minSize: 1
-      name: ng-ubuntu2404
+      name: ng-amazonlinux2023
       privateNetworking: true
       spot: false
       tags:
@@ -221,8 +221,8 @@ spec:
       volumeSize: 80
       volumeThroughput: 125
       volumeType: gp3
-    - amiFamily: AmazonLinux2023
-      desiredCapacity: 2
+    - amiFamily: Ubuntu2404
+      desiredCapacity: 1
       disableIMDSv1: false
       disablePodIMDS: false
       ebsOptimized: false
@@ -234,7 +234,7 @@ spec:
       maxPodsPerNode: 0
       maxSize: 2
       minSize: 1
-      name: ng-amazonlinux2023
+      name: ng-ubuntu2404
       privateNetworking: true
       spot: false
       tags:
