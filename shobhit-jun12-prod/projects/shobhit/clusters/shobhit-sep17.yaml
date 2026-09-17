@@ -192,7 +192,7 @@ spec:
         username: shobrafay
     managedNodeGroups:
     - amiFamily: Ubuntu2404
-      desiredCapacity: 0
+      desiredCapacity: 1
       disableIMDSv1: false
       disablePodIMDS: false
       ebsOptimized: false
@@ -203,7 +203,7 @@ spec:
         key: rauto
       maxPodsPerNode: 0
       maxSize: 2
-      minSize: 0
+      minSize: 1
       name: ng-ubuntu2404
       privateNetworking: true
       spot: false
@@ -222,7 +222,7 @@ spec:
       volumeThroughput: 125
       volumeType: gp3
     - amiFamily: AmazonLinux2023
-      desiredCapacity: 0
+      desiredCapacity: 2
       disableIMDSv1: false
       disablePodIMDS: false
       ebsOptimized: false
@@ -233,7 +233,7 @@ spec:
         key: rauto
       maxPodsPerNode: 0
       maxSize: 2
-      minSize: 0
+      minSize: 1
       name: ng-amazonlinux2023
       privateNetworking: true
       spot: false
@@ -272,7 +272,7 @@ spec:
             - subnet: subnet-08c68e5a33b3171ba
     nodeGroups:
     - amiFamily: AmazonLinux2023
-      desiredCapacity: 0
+      desiredCapacity: 1
       disableIMDSv1: false
       disablePodIMDS: false
       ebsOptimized: false
@@ -282,7 +282,7 @@ spec:
       labels:
         key: rauto
       maxSize: 4
-      minSize: 0
+      minSize: 1
       name: ng-self-fully-loaded
       privateNetworking: true
       securityGroups:
