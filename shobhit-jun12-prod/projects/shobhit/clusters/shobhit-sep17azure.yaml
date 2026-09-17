@@ -12,6 +12,7 @@ metadata:
 spec:
   blueprintConfig:
     name: minimal
+    version: latest
   cloudCredentials: shobhit_azure2
   config:
     kind: aksClusterConfig
