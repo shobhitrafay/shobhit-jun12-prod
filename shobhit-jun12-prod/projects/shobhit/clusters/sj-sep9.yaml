@@ -124,7 +124,7 @@ spec:
           oidcIssuerProfile:
             enabled: true
           powerState:
-            code: Running
+            code: Stopped
           securityProfile:
             workloadIdentity:
               enabled: true
