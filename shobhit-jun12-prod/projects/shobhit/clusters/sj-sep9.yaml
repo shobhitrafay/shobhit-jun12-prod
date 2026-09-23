@@ -191,6 +191,53 @@ spec:
           vnetSubnetID: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-fnf-nw-rg/providers/Microsoft.Network/virtualNetworks/shobhit-fnf-vnet/subnets/default
         type: Microsoft.ContainerService/managedClusters/agentPools
       resourceGroupName: shobhit-rg
+      workloadIdentities:
+      - createIdentity: true
+        metadata:
+          location: centralindia
+          name: sj-sep9-wi
+          resourceGroup: shobhit-rg
+          tags:
+            asd: asdas
+            department: shobhit
+            owner: shobhit
+        roleAssignments:
+        - name: Key Vault Secrets User
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhitkeyvault2
+        - name: Key Vault Secrets Officer
+          scope: /subscriptions/a2252eb2-7a25-432b-a5ec-e18eba6f26b1/resourceGroups/shobhit-rg/providers/Microsoft.KeyVault/vaults/shobhit-keyvault
+        serviceAccounts:
+        - createAccount: true
+          metadata:
+            annotations:
+              role: dev
+            labels:
+              department: shobhit
+              owner: shobhit
+            name: sj-sep9-sa1
+            namespace: default
+        - createAccount: true
+          metadata:
+            annotations:
+              role: dev
+            labels:
+              asdas: dfss
+              department: shobhit
+              owner: shobhit
+            name: sj-sep9-sa2
+            namespace: default
+        - createAccount: true
+          metadata:
+            annotations:
+              role: dev
+              sa: dsdds
+              sss: dd
+            labels:
+              department: shobhit
+              owner: shobhit
+              sa: ds
+            name: sj-sep9-sa3
+            namespace: default
   sharing:
     enabled: true
     projects:
