@@ -3,6 +3,7 @@ kind: Cluster
 metadata:
   labels:
     add: dsd
+    adsads: ddd
     asd: ""
     asdas: asdas
     asdasdasd: ddd
