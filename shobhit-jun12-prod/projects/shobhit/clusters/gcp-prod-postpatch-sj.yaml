@@ -9,7 +9,7 @@ spec:
     version: latest
   cloudCredentials: gke-dev
   config:
-    controlPlaneVersion: "1.34"
+    controlPlaneVersion: "1.35"
     features:
       enableComputeEnginePersistentDiskCSIDriver: true
     gcpProject: dev-382813
