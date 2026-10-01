@@ -43,4 +43,6 @@ spec:
         strategy: SURGE
     releaseChannel:
       channel: REGULAR
+    security:
+      enableWorkloadIdentity: true
   type: gke
