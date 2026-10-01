@@ -38,6 +38,10 @@ spec:
         autoUpgrade: true
       name: default-nodepool
       nodeVersion: "1.34"
+      resourceLabels:
+        schedule: donotstop
+      security:
+        workloadMetadataMode: gce_metadata
       size: 3
       upgradeSettings:
         config:
