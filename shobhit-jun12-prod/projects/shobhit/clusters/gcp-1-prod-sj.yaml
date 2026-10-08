@@ -7,8 +7,8 @@ metadata:
   project: shobhit
 spec:
   blueprint:
-    name: bp
-    version: v1
+    name: default-gke
+    version: latest
   cloudCredentials: gke-dev
   config:
     controlPlaneVersion: "1.35"
