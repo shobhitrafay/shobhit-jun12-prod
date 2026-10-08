@@ -1,11 +1,13 @@
 apiVersion: infra.k8smgmt.io/v3
 kind: Cluster
 metadata:
+  labels:
+    schedule: donotstop
   name: gcp-1-prod-sj
   project: shobhit
 spec:
   blueprint:
-    name: default-gke
+    name: minimal
     version: latest
   cloudCredentials: gke-dev
   config:
