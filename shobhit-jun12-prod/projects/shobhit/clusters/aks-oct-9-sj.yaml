@@ -5,7 +5,8 @@ metadata:
   project: shobhit
 spec:
   blueprintConfig:
-    name: minimal
+    name: default-aks
+    version: latest
   cloudCredentials: shobhit_azure2
   config:
     kind: aksClusterConfig
