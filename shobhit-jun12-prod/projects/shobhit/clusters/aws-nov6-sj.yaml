@@ -45,7 +45,7 @@ spec:
     metadata:
       name: aws-nov6-sj
       region: us-west-2
-      version: "1.35"
+      version: "1.36"
     network:
       cni:
         name: aws-cni
