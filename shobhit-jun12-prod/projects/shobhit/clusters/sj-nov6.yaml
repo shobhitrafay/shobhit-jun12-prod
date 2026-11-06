@@ -41,6 +41,20 @@ spec:
         config:
           maxSurge: 1
         strategy: SURGE
+    - machineConfig:
+        bootDiskSize: 100
+        bootDiskType: hyperdisk-balanced
+        imageType: COS_CONTAINERD
+        machineType: n4d-highcpu-2
+      management:
+        autoUpgrade: true
+      name: asdasda
+      nodeVersion: "1.34"
+      size: 3
+      upgradeSettings:
+        config:
+          maxSurge: 1
+        strategy: SURGE
     releaseChannel:
       channel: REGULAR
   type: gke
