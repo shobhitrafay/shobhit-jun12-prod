@@ -1,0 +1,59 @@
+apiVersion: infra.k8smgmt.io/v3
+kind: Cluster
+metadata:
+  name: aws-nov6-sj
+  project: shobhit
+spec:
+  blueprintConfig:
+    name: minimal
+    version: 4.3.3
+  cloudCredentials: aws-cred-shobhit-raut
+  config:
+    accessConfig:
+      authenticationMode: CONFIG_MAP
+    addons:
+    - name: coredns
+      version: v1.13.2-eksbuild.68
+    - name: vpc-cni
+      version: v1.22.4-eksbuild.10
+    - name: kube-proxy
+      version: v1.35.3-eksbuild.64
+    addonsConfig: {}
+    autoModeConfig: {}
+    autoZonalShiftConfig: {}
+    deleteProtection:
+      enabled: false
+    managedNodeGroups:
+    - amiFamily: AmazonLinux2023
+      desiredCapacity: 2
+      iam:
+        withAddonPolicies:
+          autoScaler: true
+      instanceTypes:
+      - t3.xlarge
+      maxSize: 2
+      minSize: 2
+      name: managedng
+      tags:
+        email: sj@rafay.co
+        env: qa
+      version: "1.35"
+      volumeSize: 80
+      volumeType: gp3
+    metadata:
+      name: aws-nov6-sj
+      region: us-west-2
+      version: "1.35"
+    network:
+      cni:
+        name: aws-cni
+    vpc:
+      cidr: 192.168.0.0/16
+      clusterEndpoints:
+        privateAccess: true
+        publicAccess: false
+      nat:
+        gateway: Single
+    zonalShiftConfig: {}
+  proxyConfig: {}
+  type: aws-eks
